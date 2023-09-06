@@ -10,12 +10,19 @@ const cors = require("cors")
 const xss = require('xss-clean')
 const expressLimit = require("express-rate-limit")
 
+//Swagger documentation
+const swaggerUI = require('swagger-ui-express')
+const YAML = require('yamljs')
+const swaggerDocumentation = YAML.load('./swagger.yaml')
+
 // connect to db
 const connectDb = require('./db/connect')
 
 app.get('/', (req, res) => {
-    res.send('Jobs api')
+    res.send('<h1>Jobs api</h1> <br/> <a href="/api-docs">Documentation</a>')
 })
+
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocumentation))
 
 // routers
 const authRouter = require('./routes/auth')
